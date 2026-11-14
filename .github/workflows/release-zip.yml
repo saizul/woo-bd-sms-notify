@@ -1,0 +1,84 @@
+name: Release zip
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  SLUG: woo-bd-sms-notify
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+
+      - name: Check the version matches the tag
+        if: github.event_name == 'release'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          header=$(sed -n 's/^ \* Version: *//p' "$SLUG.php" | tr -d '[:space:]')
+          stable=$(sed -n 's/^Stable tag: *//p' readme.txt | tr -d '[:space:]')
+          echo "tag=$tag header=$header stable=$stable"
+          test "$tag" = "$header"
+          test "$tag" = "$stable"
+
+      - name: Build the plugin folder
+        run: |
+          mkdir -p "build/$SLUG"
+          rsync -a --exclude-from=.distignore ./ "build/$SLUG/"
+          # The plugin has no runtime Composer dependencies; its own autoloader is used.
+          test ! -e "build/$SLUG/vendor"
+          test ! -e "build/$SLUG/tests"
+          test -e "build/$SLUG/assets/js/checkout-otp.js"
+          test -e "build/$SLUG/languages/$SLUG.pot"
+          find "build/$SLUG" -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+          find "build/$SLUG" -type f | sort
+
+      - name: Smoke test the autoloader
+        run: |
+          php -r '
+            define("ABSPATH", __DIR__);
+            spl_autoload_register(function ($c) {
+              $p = ["Saizul\\BdSms\\WP\\" => "build/woo-bd-sms-notify/includes/", "Saizul\\BdSms\\" => "build/woo-bd-sms-notify/src/"];
+              foreach ($p as $prefix => $dir) {
+                if (strpos($c, $prefix) === 0) { require $dir . str_replace("\\", "/", substr($c, strlen($prefix))) . ".php"; return; }
+              }
+            });
+            $n = new Saizul\BdSms\Phone\PhoneNormalizer();
+            $s = new Saizul\BdSms\Sms\SegmentCounter();
+            $ok = $n->to_msisdn("+880 1711-234567") === "8801711234567"
+              && $s->count(str_repeat("\u{0995}", 71))->segments() === 2
+              && $s->count(str_repeat("a", 160))->segments() === 1;
+            exit($ok ? 0 : 1);
+          '
+
+      - name: Create the zip
+        run: |
+          cd build
+          zip -r -q "../$SLUG.zip" "$SLUG"
+          cd ..
+          unzip -l "$SLUG.zip" | tail -n 1
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.SLUG }}
+          path: ${{ env.SLUG }}.zip
+
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$GITHUB_REF_NAME" "$SLUG.zip" --clobber

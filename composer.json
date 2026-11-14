@@ -1,0 +1,55 @@
+{
+    "name": "saizul/woo-bd-sms-notify",
+    "description": "WooCommerce order SMS for Bangladesh: BulkSMSBD, SSL Wireless, Alpha SMS or any HTTP gateway, Bangla segment counting, retries, send log and COD OTP verification.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["woocommerce", "sms", "bangladesh", "bulksmsbd", "ssl-wireless", "alpha-sms", "otp", "cod"],
+    "homepage": "https://github.com/saizul/woo-bd-sms-notify",
+    "authors": [
+        {
+            "name": "Saizul Amin",
+            "homepage": "https://saizul.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/saizul/woo-bd-sms-notify/issues",
+        "source": "https://github.com/saizul/woo-bd-sms-notify"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpunit/phpunit": "^9.6",
+        "squizlabs/php_codesniffer": "^3.9",
+        "wp-coding-standards/wpcs": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Saizul\\BdSms\\WP\\": "includes/",
+            "Saizul\\BdSms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Saizul\\BdSms\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "make-pot": "php bin/make-pot.php"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4.33"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

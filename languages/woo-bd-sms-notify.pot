@@ -1,0 +1,557 @@
+# Copyright (C) 2026 Saizul Amin
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: SMS Notify for WooCommerce (Bangladesh) 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/saizul/woo-bd-sms-notify/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Domain: woo-bd-sms-notify\n"
+
+#. Plugin Name of the plugin
+#: woo-bd-sms-notify.php
+msgid "SMS Notify for WooCommerce (Bangladesh)"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: woo-bd-sms-notify.php
+msgid "https://github.com/saizul/woo-bd-sms-notify"
+msgstr ""
+
+#. Description of the plugin
+#: woo-bd-sms-notify.php
+msgid "Order status SMS for Bangladeshi stores through BulkSMSBD, SSL Wireless, Alpha SMS or any HTTP gateway, with Bangla segment counting, retries, a send log and COD phone verification."
+msgstr ""
+
+#. Author of the plugin
+#: woo-bd-sms-notify.php
+msgid "Saizul Amin"
+msgstr ""
+
+#. Author URI of the plugin
+#: woo-bd-sms-notify.php
+msgid "https://saizul.com"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:68 includes/Admin/AdminPage.php:69
+msgid "SMS Notify"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:84
+msgid "Settings"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:115 includes/Admin/AdminPage.php:193
+msgid "Gateway"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:116
+msgid "Templates"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:117
+msgid "COD verification"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:118
+msgid "Send log"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:119
+msgid "Test & tools"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:128 includes/Admin/AdminPage.php:450
+msgid "You are not allowed to manage SMS settings."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:136
+msgid "SMS Notify for WooCommerce"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:191
+msgid "Send order SMS"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:200
+msgid "Set by WOO_BD_SMS_GATEWAY in wp-config.php."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:208
+msgid "Connect any HTTP SMS API. Placeholders: {to}, {to_local}, {to_e164}, {message}, {sender_id}, {api_key}, {api_secret}, {reference}, {unicode}, {type}."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:209
+msgid "Fill in from a preset:"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:223
+msgid "Recipients and limits"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:224
+msgid "Admin phone numbers"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:224
+msgid "Comma separated. Receive the admin copies enabled on the Templates tab."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:225
+msgid "SMS per number"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:225 includes/Admin/AdminPage.php:227
+msgid "Per window below; 0 = unlimited."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:226
+msgid "Per-number window (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:227
+msgid "SMS for the whole store"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:228
+msgid "Store window (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:229
+msgid "Attempts per SMS"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:229
+msgid "Temporary gateway errors are retried with Action Scheduler."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:230
+msgid "First retry after (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:231
+msgid "Longest SMS (segments)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:232
+msgid "Replace curly quotes and dashes so English SMS stay GSM-7"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:233
+msgid "Keep the log for (days)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:233
+msgid "0 keeps entries forever."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:234
+msgid "Delete settings and the log when the plugin is deleted"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:249
+msgid "Placeholders:"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:255
+msgid "Use {placeholder|fallback} for a default, for example {tracking|not yet available}. Bangla text is sent as Unicode: 70 characters per SMS, 67 per part when longer."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:257 includes/Admin/AdminPage.php:373
+msgid "Status"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:257
+msgid "Customer SMS"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:257
+msgid "Admin copy"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:272
+msgid "Enabled"
+msgstr ""
+
+#. translators: 1: number of SMS, 2: encoding, 3: characters
+#: includes/Admin/AdminPage.php:280
+#, php-format
+msgid "Preview: %1$d SMS, %2$s, %3$d characters"
+msgid_plural "Preview: %1$d SMS, %2$s, %3$d characters"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/AdminPage.php:293
+msgid "Tracking"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:294
+msgid "Tracking number meta keys"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:294
+msgid "Comma separated order meta keys checked before the built-in ones (_tracking_number, Shipment Tracking items)."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:295
+msgid "Tracking link template"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:295
+msgid "Used for {tracking_url} when no link is stored, for example https://courier.example/track/{tracking}"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:313
+msgid "Cash on delivery"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:316
+msgid "Customers paying with the selected methods must confirm their billing phone with a one-time code before the order is placed. Works with the classic (shortcode) checkout."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:318
+msgid "Require phone verification"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:319
+msgid "Payment methods"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:329
+msgid "Only for orders from (amount)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:330
+msgid "Code length"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:331
+msgid "Code valid for (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:332
+msgid "Wrong codes allowed"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:333
+msgid "Resend cooldown (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:334
+msgid "Codes per number"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:335
+msgid "Per window (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:336 includes/Admin/AdminPage.php:373 includes/Admin/AdminPage.php:431
+msgid "Message"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:338
+msgid "Placeholders: {otp}, {minutes}, {site_name}. Codes are never stored in plain text or in the log."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:362
+msgid "All statuses"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:367
+msgid "Phone (01XXXXXXXXX)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:368 includes/Admin/AdminPage.php:373
+msgid "Order"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:369
+msgid "Filter"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:373
+msgid "Date"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:373
+msgid "Recipient"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:373
+msgid "Details"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:378
+msgid "No SMS logged yet."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:393
+msgid "Retry now"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:419
+msgid "Send a test SMS"
+msgstr ""
+
+#. translators: %s: gateway name
+#: includes/Admin/AdminPage.php:421
+#, php-format
+msgid "Uses the active gateway: %s."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:430
+msgid "Phone"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:431
+msgid "Test SMS from SMS Notify for WooCommerce."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:433
+msgid "Send test SMS"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:438
+msgid "Balance"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:438
+msgid "Not available."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:441
+msgid "WP-CLI"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:478
+msgid "Settings saved."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:489 includes/Admin/AdminPage.php:513 includes/Order/OrderScreen.php:167
+msgid "You are not allowed to send SMS."
+msgstr ""
+
+#. translators: %s: masked phone number
+#: includes/Admin/AdminPage.php:497
+#, php-format
+msgid "Test SMS sent to %s."
+msgstr ""
+
+#. translators: 1: status, 2: error
+#: includes/Admin/AdminPage.php:500
+#, php-format
+msgid "Test SMS %1$s: %2$s"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:523
+msgid "Nothing to retry."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:593
+msgid "Processing"
+msgstr ""
+
+#. translators: %s: constant name
+#: includes/Admin/AdminPage.php:625
+#, php-format
+msgid "Defined by %s in wp-config.php."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:638
+msgid "Remove"
+msgstr ""
+
+#. translators: %s: constant name
+#: includes/Admin/AdminPage.php:641
+#, php-format
+msgid "Leave empty to keep the saved value. Can also be set with %s in wp-config.php."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:104
+msgid "Cash on delivery orders need a verified mobile number. We will send a code to your billing phone."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:105
+msgid "Send code"
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:107
+msgid "Verification code"
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:109
+msgid "Verify"
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:131
+msgid "Sending..."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:132
+msgid "Send a new code"
+msgstr ""
+
+#. translators: %d: seconds
+#: includes/Checkout/CodOtp.php:134
+#, php-format
+msgid "You can request a new code in %d seconds."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:135 includes/Checkout/CodOtp.php:208
+msgid "Phone number verified."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:136
+msgid "Enter the code you received."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:137
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:150
+msgid "Please enter a valid Bangladeshi mobile number (01XXXXXXXXX) in the billing phone field."
+msgstr ""
+
+#. translators: %d: seconds
+#: includes/Checkout/CodOtp.php:159
+#, php-format
+msgid "Please wait %d seconds before requesting a new code."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:160
+msgid "Too many codes were requested for this number. Please try again later."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:183
+msgid "The code could not be sent. Please try again in a moment."
+msgstr ""
+
+#. translators: %s: masked phone number
+#: includes/Checkout/CodOtp.php:189
+#, php-format
+msgid "We sent a code to %s."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:203
+msgid "Please enter a valid Bangladeshi mobile number."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:229
+msgid "Please verify your mobile number with the code we send by SMS before placing the order."
+msgstr ""
+
+#. translators: %d: attempts left
+#: includes/Checkout/CodOtp.php:266
+#, php-format
+msgid "Wrong code. %d attempt left."
+msgid_plural "Wrong code. %d attempts left."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Checkout/CodOtp.php:268
+msgid "The code has expired. Please request a new one."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:270
+msgid "Too many wrong codes. Please request a new one."
+msgstr ""
+
+#: includes/Checkout/CodOtp.php:272
+msgid "Please request a code first."
+msgstr ""
+
+#: includes/Order/OrderScreen.php:71
+msgid "Resend SMS for the current status"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:86
+msgid "No SMS template is enabled for the current status."
+msgstr ""
+
+#: includes/Order/OrderScreen.php:100
+msgid "SMS"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:121
+msgid "No SMS sent for this order yet."
+msgstr ""
+
+#: includes/Order/OrderScreen.php:141
+msgid "Send a custom SMS to the customer"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:146
+msgid "Send SMS"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:171
+msgid "Order not found."
+msgstr ""
+
+#. translators: 1: masked phone number, 2: status
+#: includes/Order/OrderScreen.php:179
+#, php-format
+msgid "Custom SMS to %1$s: %2$s"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:193
+msgid "Queued"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:194
+msgid "Sent"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:195
+msgid "Failed"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:196
+msgid "Retrying"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:197
+msgid "Rate limited"
+msgstr ""
+
+#: includes/Order/OrderScreen.php:198
+msgid "Skipped"
+msgstr ""
+
+#: includes/Order/StatusNotifier.php:172
+msgid "admin"
+msgstr ""
+
+#: includes/Order/StatusNotifier.php:172
+msgid "customer"
+msgstr ""
+
+#. translators: 1: recipient type, 2: masked phone number
+#: includes/Order/StatusNotifier.php:176
+#, php-format
+msgid "SMS sent to %1$s %2$s."
+msgstr ""
+
+#. translators: 1: recipient type, 2: masked phone number, 3: error message
+#: includes/Order/StatusNotifier.php:181
+#, php-format
+msgid "SMS to %1$s %2$s will be retried: %3$s"
+msgstr ""
+
+#. translators: 1: recipient type, 2: masked phone number, 3: error message
+#: includes/Order/StatusNotifier.php:185
+#, php-format
+msgid "SMS to %1$s %2$s was not sent: %3$s"
+msgstr ""
+
+#: includes/Plugin.php:185
+msgid "SMS Notify for WooCommerce needs WooCommerce to be installed and active."
+msgstr ""
+
+#: woo-bd-sms-notify.php:29
+msgid "SMS Notify for WooCommerce requires PHP 7.4 or newer."
+msgstr ""
