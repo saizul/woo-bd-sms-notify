@@ -34,6 +34,7 @@ Unicode detection and SMS segment counting (160/70 characters, 153/67 per part w
 * Phone numbers normalised (+880, 880, Bangla digits); invalid numbers are skipped and logged.
 * Send log with filters and a retry button, plus an SMS box on the order screen.
 * Temporary gateway errors are retried with Action Scheduler.
+* Optional backup gateway: when the main gateway is down, the SMS goes through the backup right away, and a failing gateway is skipped for a cooldown period.
 * Per-number and store-wide rate limits.
 * Status SMS are sent in the background so checkout stays fast.
 
@@ -43,7 +44,7 @@ Optional one-time code on the classic checkout for cash-on-delivery (or any sele
 
 **For developers**
 
-* WP-CLI: `wp bd-sms test`, `send`, `log`, `count`, `retry`.
+* WP-CLI: `wp bd-sms test`, `send`, `log`, `count`, `retry`, `failover`.
 * Credentials can be defined as constants in wp-config.php and are then never stored.
 * Filters to add gateways, change placeholder values and messages.
 * HPOS compatible.
@@ -91,6 +92,9 @@ Users with the `manage_woocommerce` capability (filterable with `woo_bd_sms_capa
 4. Phone verification on the checkout.
 
 == Changelog ==
+
+= Unreleased =
+* Backup gateway with failover on temporary (or any) errors, extra failover codes, a circuit breaker with cooldown, `WOO_BD_SMS_FAILOVER_GATEWAY` and `wp bd-sms failover`.
 
 = 0.1.0 =
 * First release: BulkSMSBD, SSL Wireless, Alpha SMS and generic HTTP gateways, per-status templates with admin copy, Unicode segment counting, phone normalisation, send log, Action Scheduler retries, rate limiting, COD OTP verification, WP-CLI commands, HPOS support.

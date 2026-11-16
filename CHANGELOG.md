@@ -6,6 +6,25 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Gateway failover: an optional backup gateway (Gateway tab or the
+  `WOO_BD_SMS_FAILOVER_GATEWAY` constant) receives a message right away when the
+  main gateway fails. Fails over on temporary errors by default, on any error in
+  `any` mode, or on listed provider codes such as `1007` (BulkSMSBD balance).
+- Circuit breaker: after a number of consecutive failures (default 3) the main
+  gateway is skipped for a cooldown (default 300 s), then probed again.
+- `wp bd-sms failover` shows the backup gateway and breaker state; `--reset`
+  closes the breaker.
+- `FailoverGateway`, `FailoverPolicy` and the `RoutedGateway` interface for code
+  that builds its own sender.
+
+### Changed
+
+- The send log records the gateway that actually handled each attempt.
+- When both gateways fail, the logged error contains both responses and the
+  message is retried if either error was temporary.
+
 ## [0.1.0] - 2026-11-14
 
 ### Added

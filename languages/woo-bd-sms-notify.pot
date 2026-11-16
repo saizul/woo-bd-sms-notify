@@ -36,336 +36,390 @@ msgstr ""
 msgid "https://saizul.com"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:68 includes/Admin/AdminPage.php:69
+#: includes/Admin/AdminPage.php:70 includes/Admin/AdminPage.php:71
 msgid "SMS Notify"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:84
+#: includes/Admin/AdminPage.php:86
 msgid "Settings"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:115 includes/Admin/AdminPage.php:193
+#: includes/Admin/AdminPage.php:117 includes/Admin/AdminPage.php:195
 msgid "Gateway"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:116
+#: includes/Admin/AdminPage.php:118
 msgid "Templates"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:117
+#: includes/Admin/AdminPage.php:119
 msgid "COD verification"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:118
+#: includes/Admin/AdminPage.php:120
 msgid "Send log"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:119
+#: includes/Admin/AdminPage.php:121
 msgid "Test & tools"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:128 includes/Admin/AdminPage.php:450
+#: includes/Admin/AdminPage.php:130 includes/Admin/AdminPage.php:496
 msgid "You are not allowed to manage SMS settings."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:136
+#: includes/Admin/AdminPage.php:138
 msgid "SMS Notify for WooCommerce"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:191
+#: includes/Admin/AdminPage.php:193
 msgid "Send order SMS"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:200
+#: includes/Admin/AdminPage.php:202
 msgid "Set by WOO_BD_SMS_GATEWAY in wp-config.php."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:208
+#: includes/Admin/AdminPage.php:212
 msgid "Connect any HTTP SMS API. Placeholders: {to}, {to_local}, {to_e164}, {message}, {sender_id}, {api_key}, {api_secret}, {reference}, {unicode}, {type}."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:209
+#: includes/Admin/AdminPage.php:213
 msgid "Fill in from a preset:"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:223
+#: includes/Admin/AdminPage.php:227
 msgid "Recipients and limits"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:224
+#: includes/Admin/AdminPage.php:228
 msgid "Admin phone numbers"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:224
+#: includes/Admin/AdminPage.php:228
 msgid "Comma separated. Receive the admin copies enabled on the Templates tab."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:225
+#: includes/Admin/AdminPage.php:229
 msgid "SMS per number"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:225 includes/Admin/AdminPage.php:227
+#: includes/Admin/AdminPage.php:229 includes/Admin/AdminPage.php:231
 msgid "Per window below; 0 = unlimited."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:226
+#: includes/Admin/AdminPage.php:230
 msgid "Per-number window (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:227
+#: includes/Admin/AdminPage.php:231
 msgid "SMS for the whole store"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:228
+#: includes/Admin/AdminPage.php:232
 msgid "Store window (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:229
+#: includes/Admin/AdminPage.php:233
 msgid "Attempts per SMS"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:229
+#: includes/Admin/AdminPage.php:233
 msgid "Temporary gateway errors are retried with Action Scheduler."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:230
+#: includes/Admin/AdminPage.php:234
 msgid "First retry after (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:231
+#: includes/Admin/AdminPage.php:235
 msgid "Longest SMS (segments)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:232
+#: includes/Admin/AdminPage.php:236
 msgid "Replace curly quotes and dashes so English SMS stay GSM-7"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:233
+#: includes/Admin/AdminPage.php:237
 msgid "Keep the log for (days)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:233
+#: includes/Admin/AdminPage.php:237
 msgid "0 keeps entries forever."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:234
+#: includes/Admin/AdminPage.php:238
 msgid "Delete settings and the log when the plugin is deleted"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:249
+#: includes/Admin/AdminPage.php:252
+msgid "Backup gateway"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:253
+msgid "None (no failover)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:260
+msgid "Messages the main gateway cannot send are sent through this gateway right away."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:262
+msgid "Set by WOO_BD_SMS_FAILOVER_GATEWAY in wp-config.php."
+msgstr ""
+
+#. translators: %s: date and time
+#: includes/Admin/AdminPage.php:269
+#, php-format
+msgid "The main gateway failed repeatedly and is skipped until %s."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:275
+msgid "Fail over on"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:276
+msgid "Temporary errors (network, server errors, rate limits)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:277
+msgid "Any error (also balance, credentials, sender ID)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:279
+msgid "Also fail over on codes"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:279
+msgid "Comma-separated gateway error codes, for example 1007 for an empty BulkSMSBD balance."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:280
+msgid "Skip the main gateway after (failures)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:280
+msgid "Consecutive failures; 0 always tries the main gateway first."
+msgstr ""
+
+#: includes/Admin/AdminPage.php:281
+msgid "Skip it for (seconds)"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:295
 msgid "Placeholders:"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:255
+#: includes/Admin/AdminPage.php:301
 msgid "Use {placeholder|fallback} for a default, for example {tracking|not yet available}. Bangla text is sent as Unicode: 70 characters per SMS, 67 per part when longer."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:257 includes/Admin/AdminPage.php:373
+#: includes/Admin/AdminPage.php:303 includes/Admin/AdminPage.php:419
 msgid "Status"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:257
+#: includes/Admin/AdminPage.php:303
 msgid "Customer SMS"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:257
+#: includes/Admin/AdminPage.php:303
 msgid "Admin copy"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:272
+#: includes/Admin/AdminPage.php:318
 msgid "Enabled"
 msgstr ""
 
 #. translators: 1: number of SMS, 2: encoding, 3: characters
-#: includes/Admin/AdminPage.php:280
+#: includes/Admin/AdminPage.php:326
 #, php-format
 msgid "Preview: %1$d SMS, %2$s, %3$d characters"
 msgid_plural "Preview: %1$d SMS, %2$s, %3$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/AdminPage.php:293
+#: includes/Admin/AdminPage.php:339
 msgid "Tracking"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:294
+#: includes/Admin/AdminPage.php:340
 msgid "Tracking number meta keys"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:294
+#: includes/Admin/AdminPage.php:340
 msgid "Comma separated order meta keys checked before the built-in ones (_tracking_number, Shipment Tracking items)."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:295
+#: includes/Admin/AdminPage.php:341
 msgid "Tracking link template"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:295
+#: includes/Admin/AdminPage.php:341
 msgid "Used for {tracking_url} when no link is stored, for example https://courier.example/track/{tracking}"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:313
+#: includes/Admin/AdminPage.php:359
 msgid "Cash on delivery"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:316
+#: includes/Admin/AdminPage.php:362
 msgid "Customers paying with the selected methods must confirm their billing phone with a one-time code before the order is placed. Works with the classic (shortcode) checkout."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:318
+#: includes/Admin/AdminPage.php:364
 msgid "Require phone verification"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:319
+#: includes/Admin/AdminPage.php:365
 msgid "Payment methods"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:329
+#: includes/Admin/AdminPage.php:375
 msgid "Only for orders from (amount)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:330
+#: includes/Admin/AdminPage.php:376
 msgid "Code length"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:331
+#: includes/Admin/AdminPage.php:377
 msgid "Code valid for (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:332
+#: includes/Admin/AdminPage.php:378
 msgid "Wrong codes allowed"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:333
+#: includes/Admin/AdminPage.php:379
 msgid "Resend cooldown (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:334
+#: includes/Admin/AdminPage.php:380
 msgid "Codes per number"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:335
+#: includes/Admin/AdminPage.php:381
 msgid "Per window (seconds)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:336 includes/Admin/AdminPage.php:373 includes/Admin/AdminPage.php:431
+#: includes/Admin/AdminPage.php:382 includes/Admin/AdminPage.php:419 includes/Admin/AdminPage.php:477
 msgid "Message"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:338
+#: includes/Admin/AdminPage.php:384
 msgid "Placeholders: {otp}, {minutes}, {site_name}. Codes are never stored in plain text or in the log."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:362
+#: includes/Admin/AdminPage.php:408
 msgid "All statuses"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:367
+#: includes/Admin/AdminPage.php:413
 msgid "Phone (01XXXXXXXXX)"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:368 includes/Admin/AdminPage.php:373
+#: includes/Admin/AdminPage.php:414 includes/Admin/AdminPage.php:419
 msgid "Order"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:369
+#: includes/Admin/AdminPage.php:415
 msgid "Filter"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:373
+#: includes/Admin/AdminPage.php:419
 msgid "Date"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:373
+#: includes/Admin/AdminPage.php:419
 msgid "Recipient"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:373
+#: includes/Admin/AdminPage.php:419
 msgid "Details"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:378
+#: includes/Admin/AdminPage.php:424
 msgid "No SMS logged yet."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:393
+#: includes/Admin/AdminPage.php:439
 msgid "Retry now"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:419
+#: includes/Admin/AdminPage.php:465
 msgid "Send a test SMS"
 msgstr ""
 
 #. translators: %s: gateway name
-#: includes/Admin/AdminPage.php:421
+#: includes/Admin/AdminPage.php:467
 #, php-format
 msgid "Uses the active gateway: %s."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:430
+#: includes/Admin/AdminPage.php:476
 msgid "Phone"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:431
+#: includes/Admin/AdminPage.php:477
 msgid "Test SMS from SMS Notify for WooCommerce."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:433
+#: includes/Admin/AdminPage.php:479
 msgid "Send test SMS"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:438
+#: includes/Admin/AdminPage.php:484
 msgid "Balance"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:438
+#: includes/Admin/AdminPage.php:484
 msgid "Not available."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:441
+#: includes/Admin/AdminPage.php:487
 msgid "WP-CLI"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:478
+#: includes/Admin/AdminPage.php:524
 msgid "Settings saved."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:489 includes/Admin/AdminPage.php:513 includes/Order/OrderScreen.php:167
+#: includes/Admin/AdminPage.php:535 includes/Admin/AdminPage.php:559 includes/Order/OrderScreen.php:167
 msgid "You are not allowed to send SMS."
 msgstr ""
 
 #. translators: %s: masked phone number
-#: includes/Admin/AdminPage.php:497
+#: includes/Admin/AdminPage.php:543
 #, php-format
 msgid "Test SMS sent to %s."
 msgstr ""
 
 #. translators: 1: status, 2: error
-#: includes/Admin/AdminPage.php:500
+#: includes/Admin/AdminPage.php:546
 #, php-format
 msgid "Test SMS %1$s: %2$s"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:523
+#: includes/Admin/AdminPage.php:569
 msgid "Nothing to retry."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:593
+#: includes/Admin/AdminPage.php:639
 msgid "Processing"
 msgstr ""
 
 #. translators: %s: constant name
-#: includes/Admin/AdminPage.php:625
+#: includes/Admin/AdminPage.php:671
 #, php-format
 msgid "Defined by %s in wp-config.php."
 msgstr ""
 
-#: includes/Admin/AdminPage.php:638
+#: includes/Admin/AdminPage.php:684
 msgid "Remove"
 msgstr ""
 
 #. translators: %s: constant name
-#: includes/Admin/AdminPage.php:641
+#: includes/Admin/AdminPage.php:687
 #, php-format
 msgid "Leave empty to keep the saved value. Can also be set with %s in wp-config.php."
 msgstr ""

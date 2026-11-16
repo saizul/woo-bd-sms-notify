@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Saizul\BdSms\WP\Admin;
 
 use Saizul\BdSms\Gateway\BalanceAware;
+use Saizul\BdSms\Gateway\FailoverGateway;
+use Saizul\BdSms\Gateway\FailoverPolicy;
 use Saizul\BdSms\Gateway\FieldDefinition;
 use Saizul\BdSms\Gateway\GenericHttpGateway;
 use Saizul\BdSms\Gateway\GenericPresets;
@@ -199,7 +201,9 @@ final class AdminPage {
 		if ( defined( 'WOO_BD_SMS_GATEWAY' ) ) {
 			echo '<p class="description">' . esc_html__( 'Set by WOO_BD_SMS_GATEWAY in wp-config.php.', 'woo-bd-sms-notify' ) . '</p>';
 		}
-		echo '</td></tr></table>';
+		echo '</td></tr>';
+		$this->render_failover( $settings, $active );
+		echo '</table>';
 
 		foreach ( $registry->ids() as $id ) {
 			$gateway = $this->services->gateway( $id );
@@ -233,6 +237,48 @@ final class AdminPage {
 		$this->number_row( 'log_retention_days', __( 'Keep the log for (days)', 'woo-bd-sms-notify' ), (int) $settings['log_retention_days'], __( '0 keeps entries forever.', 'woo-bd-sms-notify' ) );
 		$this->checkbox_row( 'delete_on_uninstall', __( 'Delete settings and the log when the plugin is deleted', 'woo-bd-sms-notify' ), ! empty( $settings['delete_on_uninstall'] ) );
 		echo '</table>';
+	}
+
+	/**
+	 * Backup gateway rows of the gateway tab.
+	 *
+	 * @param array<string,mixed> $settings Settings.
+	 * @param string              $active Active gateway id.
+	 */
+	private function render_failover( array $settings, string $active ): void {
+		$failover = isset( $settings['failover'] ) && is_array( $settings['failover'] ) ? $settings['failover'] : array();
+		$backup   = $this->services->settings->failover_gateway_id();
+
+		echo '<tr><th scope="row"><label for="woo-bd-sms-failover-gateway">' . esc_html__( 'Backup gateway', 'woo-bd-sms-notify' ) . '</label></th><td><select id="woo-bd-sms-failover-gateway" name="settings[failover][gateway]">';
+		printf( '<option value="">%s</option>', esc_html__( 'None (no failover)', 'woo-bd-sms-notify' ) );
+		foreach ( $this->services->settings->registry()->ids() as $id ) {
+			if ( $id === $active ) {
+				continue;
+			}
+			printf( '<option value="%1$s"%2$s>%3$s</option>', esc_attr( $id ), selected( $backup, $id, false ), esc_html( $this->services->gateway( $id )->label() ) );
+		}
+		echo '</select><p class="description">' . esc_html__( 'Messages the main gateway cannot send are sent through this gateway right away.', 'woo-bd-sms-notify' ) . '</p>';
+		if ( defined( 'WOO_BD_SMS_FAILOVER_GATEWAY' ) ) {
+			echo '<p class="description">' . esc_html__( 'Set by WOO_BD_SMS_FAILOVER_GATEWAY in wp-config.php.', 'woo-bd-sms-notify' ) . '</p>';
+		}
+		$gateway = $this->services->sending_gateway();
+		if ( $gateway instanceof FailoverGateway ) {
+			$state = $gateway->state();
+			if ( $state['open'] ) {
+				/* translators: %s: date and time */
+				echo '<p class="description"><strong>' . esc_html( sprintf( __( 'The main gateway failed repeatedly and is skipped until %s.', 'woo-bd-sms-notify' ), wp_date( 'Y-m-d H:i:s', $state['open_until'] ) ) ) . '</strong></p>';
+			}
+		}
+		echo '</td></tr>';
+
+		$mode = (string) ( $failover['mode'] ?? FailoverPolicy::MODE_TEMPORARY );
+		echo '<tr><th scope="row"><label for="woo-bd-sms-failover-mode">' . esc_html__( 'Fail over on', 'woo-bd-sms-notify' ) . '</label></th><td><select id="woo-bd-sms-failover-mode" name="settings[failover][mode]">';
+		printf( '<option value="%1$s"%2$s>%3$s</option>', esc_attr( FailoverPolicy::MODE_TEMPORARY ), selected( $mode, FailoverPolicy::MODE_TEMPORARY, false ), esc_html__( 'Temporary errors (network, server errors, rate limits)', 'woo-bd-sms-notify' ) );
+		printf( '<option value="%1$s"%2$s>%3$s</option>', esc_attr( FailoverPolicy::MODE_ANY ), selected( $mode, FailoverPolicy::MODE_ANY, false ), esc_html__( 'Any error (also balance, credentials, sender ID)', 'woo-bd-sms-notify' ) );
+		echo '</select></td></tr>';
+		$this->text_row( 'failover[codes]', __( 'Also fail over on codes', 'woo-bd-sms-notify' ), (string) ( $failover['codes'] ?? '' ), __( 'Comma-separated gateway error codes, for example 1007 for an empty BulkSMSBD balance.', 'woo-bd-sms-notify' ) );
+		$this->number_row( 'failover[threshold]', __( 'Skip the main gateway after (failures)', 'woo-bd-sms-notify' ), (int) ( $failover['threshold'] ?? 3 ), __( 'Consecutive failures; 0 always tries the main gateway first.', 'woo-bd-sms-notify' ) );
+		$this->number_row( 'failover[cooldown]', __( 'Skip it for (seconds)', 'woo-bd-sms-notify' ), (int) ( $failover['cooldown'] ?? 300 ) );
 	}
 
 	/**
@@ -535,7 +581,7 @@ final class AdminPage {
 	 */
 	private function complete_input( string $tab, array $input, array $current ): array {
 		$own    = array(
-			'gateway'   => array( 'enabled', 'gateway', 'gateways', 'admin_phones', 'rate', 'retry', 'max_segments', 'plain_punctuation', 'log_retention_days', 'delete_on_uninstall', 'generic_preset' ),
+			'gateway'   => array( 'enabled', 'gateway', 'gateways', 'failover', 'admin_phones', 'rate', 'retry', 'max_segments', 'plain_punctuation', 'log_retention_days', 'delete_on_uninstall', 'generic_preset' ),
 			'templates' => array( 'templates', 'tracking_meta_keys', 'tracking_url' ),
 			'otp'       => array( 'otp' ),
 		);

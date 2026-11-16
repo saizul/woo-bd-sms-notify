@@ -12,6 +12,7 @@ namespace Saizul\BdSms\Sms;
 use InvalidArgumentException;
 use Saizul\BdSms\Gateway\Gateway;
 use Saizul\BdSms\Gateway\Message;
+use Saizul\BdSms\Gateway\RoutedGateway;
 use Saizul\BdSms\Log\LogEntry;
 use Saizul\BdSms\Log\LogRepository;
 use Saizul\BdSms\Phone\PhoneNormalizer;
@@ -29,6 +30,8 @@ use Saizul\BdSms\Support\Clock;
  * 3. Per-number and site-wide rate limits are checked. A limited message is
  *    deferred until the window resets (OTP codes fail instead).
  * 4. The gateway is called. Temporary failures are retried with back-off.
+ *    With a {@see \Saizul\BdSms\Gateway\FailoverGateway} the log records
+ *    the gateway that handled the attempt.
  */
 final class SmsSender {
 
@@ -223,6 +226,9 @@ final class SmsSender {
 		}
 
 		$result = $this->gateway->send( $message );
+		if ( $this->gateway instanceof RoutedGateway && '' !== $this->gateway->last_gateway_id() ) {
+			$entry->gateway = $this->gateway->last_gateway_id();
+		}
 
 		$entry->response    = $result->raw();
 		$entry->provider_id = $result->message_id();
