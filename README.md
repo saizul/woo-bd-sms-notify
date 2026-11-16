@@ -35,6 +35,9 @@ Plugin slug: `woo-bd-sms-notify` - display name: *SMS Notify for WooCommerce (Ba
   box on the order screen (log + custom message).
 - **Retries**: temporary failures (timeouts, HTTP 5xx/429, documented "internal
   error" codes) are retried with exponential back-off through Action Scheduler.
+- **Gateway failover**: a backup gateway takes over when the main one is down
+  (or out of balance, if you choose), with a circuit breaker that skips a failing
+  provider for a cooldown period.
 - **Rate limiting**: per number and store-wide windows; limited messages are
   deferred to the next window instead of dropped.
 - **COD OTP verification** (classic checkout): HMAC-hashed codes bound to phone
@@ -42,7 +45,7 @@ Plugin slug: `woo-bd-sms-notify` - display name: *SMS Notify for WooCommerce (Ba
 - **Background sending**: status changes queue an async action, so payment
   callbacks are not slowed down by the SMS gateway.
 - **HPOS compatible**, orders read and written only through the CRUD API.
-- **WP-CLI**: `wp bd-sms test|send|log|count|retry`.
+- **WP-CLI**: `wp bd-sms test|send|log|count|retry|failover`.
 - Secrets can live in `wp-config.php` constants and are then never stored.
 
 ## Gateways and how they were verified
@@ -99,6 +102,7 @@ or JSON conditions such as `status=SUCCESS && smsinfo.0.sms_status=SUCCESS`,
 
 ```php
 define( 'WOO_BD_SMS_GATEWAY', 'bulksmsbd' );            // optional: force the gateway
+define( 'WOO_BD_SMS_FAILOVER_GATEWAY', 'alpha_sms' );   // optional: backup gateway ('' = off)
 define( 'WOO_BD_SMS_BULKSMSBD_API_KEY', 'your-api-key' );
 define( 'WOO_BD_SMS_BULKSMSBD_SENDER_ID', '8809600000000' );
 define( 'WOO_BD_SMS_SSL_WIRELESS_API_TOKEN', 'your-token' );
@@ -174,6 +178,30 @@ supported in 0.1.0.
   concurrency counts are approximate.
 - Failed entries can be retried from the log or with `wp bd-sms retry <id>`.
 
+## Gateway failover
+
+Pick a **Backup gateway** on the Gateway tab (or define
+`WOO_BD_SMS_FAILOVER_GATEWAY`) and configure its credentials as usual. Every SMS
+still goes to the main gateway first; when that attempt fails, the same message is
+sent through the backup straight away, before any retry is scheduled.
+
+| Setting | Default | Meaning |
+| --- | --- | --- |
+| Fail over on | Temporary errors | `temporary`: transport errors, HTTP 408/429/5xx and the retryable provider codes listed above. `any`: every failure, including balance, credential and sender ID errors. |
+| Also fail over on codes | empty | Extra provider codes that fail over in `temporary` mode, e.g. `1007` (BulkSMSBD balance) or `417` (Alpha SMS balance). |
+| Skip the main gateway after | 3 failures | Consecutive failed attempts before the main gateway is skipped (circuit breaker). `0` always tries it first. |
+| Skip it for | 300 s | Cooldown. The first SMS after it probes the main gateway again: success closes the breaker, a failure reopens it at once. |
+
+- Invalid numbers and rejected texts are not sent twice: in `temporary` mode only
+  provider-side failures move to the backup.
+- The log's gateway column shows the provider that handled each attempt. When both
+  fail, the error lists both responses and the message is retried (main gateway
+  first) if either error was temporary.
+- `wp bd-sms test --gateway=<id>` always talks to one gateway directly, so each
+  provider can be checked on its own.
+- `wp bd-sms failover` shows the breaker state; `wp bd-sms failover --reset` closes it.
+- Breaker state lives in transients next to the rate-limit counters and is removed on uninstall.
+
 ## WP-CLI
 
 ```bash
@@ -184,6 +212,8 @@ wp bd-sms send 1024 --message="Hi {first_name}, parcel {tracking} is on the way"
 wp bd-sms log --status=failed --limit=50 --format=json
 wp bd-sms count "আপনার অর্ডার পাঠানো হয়েছে"
 wp bd-sms retry 42
+wp bd-sms failover                                     # backup gateway and breaker state
+wp bd-sms failover --reset                             # try the main gateway again now
 ```
 
 ## Hooks

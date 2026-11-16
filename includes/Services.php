@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Saizul\BdSms\WP;
 
+use Saizul\BdSms\Gateway\FailoverGateway;
+use Saizul\BdSms\Gateway\FailoverPolicy;
 use Saizul\BdSms\Gateway\Gateway;
 use Saizul\BdSms\Gateway\GatewayRegistry;
 use Saizul\BdSms\Http\HttpClient;
@@ -121,16 +123,36 @@ final class Services {
 	}
 
 	/**
+	 * The gateway used for sending: the active gateway, wrapped in a
+	 * {@see FailoverGateway} when a backup gateway is configured.
+	 */
+	public function sending_gateway(): Gateway {
+		$primary = $this->gateway();
+		$backup  = $this->settings->failover_gateway_id();
+		if ( '' === $backup ) {
+			return $primary;
+		}
+
+		return new FailoverGateway(
+			$primary,
+			$this->gateway( $backup ),
+			FailoverPolicy::from_array( (array) $this->settings->get( 'failover' ) ),
+			$this->store,
+			$this->clock
+		);
+	}
+
+	/**
 	 * Sending pipeline.
 	 *
-	 * @param Gateway|null $gateway Gateway override.
+	 * @param Gateway|null $gateway Gateway override; {@see sending_gateway()} when null.
 	 */
 	public function sender( ?Gateway $gateway = null ): SmsSender {
 		$all   = $this->settings->all();
 		$retry = (array) $all['retry'];
 
 		return new SmsSender(
-			$gateway ?? $this->gateway(),
+			$gateway ?? $this->sending_gateway(),
 			$this->log,
 			new RateLimiter( $this->store, $this->clock ),
 			new RetryPolicy( (int) ( $retry['max_attempts'] ?? 3 ), (int) ( $retry['base_delay'] ?? 60 ) ),

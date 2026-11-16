@@ -18,7 +18,8 @@ use Saizul\BdSms\Settings\SettingsSchema;
  * Gateway credentials can be defined as constants in wp-config.php instead,
  * for example WOO_BD_SMS_BULKSMSBD_API_KEY or WOO_BD_SMS_SSL_WIRELESS_API_TOKEN.
  * A defined constant always wins and its value is never written to the
- * database. WOO_BD_SMS_GATEWAY selects the gateway.
+ * database. WOO_BD_SMS_GATEWAY selects the gateway and
+ * WOO_BD_SMS_FAILOVER_GATEWAY the backup gateway ('' turns failover off).
  */
 final class Settings {
 
@@ -134,6 +135,22 @@ final class Settings {
 		$id = (string) $this->get( 'gateway' );
 
 		return $this->registry->has( $id ) ? $id : 'bulksmsbd';
+	}
+
+	/**
+	 * Backup gateway id, or '' when failover is off.
+	 *
+	 * The backup must be a registered gateway other than the active one.
+	 */
+	public function failover_gateway_id(): string {
+		$forced  = ( $this->constants )( 'WOO_BD_SMS_FAILOVER_GATEWAY' );
+		$section = (array) $this->get( 'failover' );
+		$id      = null !== $forced ? $forced : (string) ( $section['gateway'] ?? '' );
+		if ( '' === $id || ! $this->registry->has( $id ) || $id === $this->gateway_id() ) {
+			return '';
+		}
+
+		return $id;
 	}
 
 	/**

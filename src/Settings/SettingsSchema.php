@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Saizul\BdSms\Settings;
 
+use Saizul\BdSms\Gateway\FailoverPolicy;
 use Saizul\BdSms\Gateway\FieldDefinition;
 use Saizul\BdSms\Gateway\GatewayRegistry;
 use Saizul\BdSms\Phone\PhoneNormalizer;
@@ -58,6 +59,13 @@ final class SettingsSchema {
 			'enabled'             => true,
 			'gateway'             => 'bulksmsbd',
 			'gateways'            => $gateways,
+			'failover'            => array(
+				'gateway'   => '',
+				'mode'      => FailoverPolicy::MODE_TEMPORARY,
+				'codes'     => '',
+				'threshold' => 3,
+				'cooldown'  => 300,
+			),
 			'admin_phones'        => '',
 			'templates'           => self::default_templates(),
 			'tracking_meta_keys'  => '',
@@ -131,6 +139,8 @@ final class SettingsSchema {
 
 		$gateway        = (string) ( $input['gateway'] ?? $previous['gateway'] );
 		$out['gateway'] = $this->registry->has( $gateway ) ? $gateway : $defaults['gateway'];
+
+		$out['failover'] = $this->sanitize_failover( $input['failover'] ?? array(), $out['gateway'], $errors );
 
 		$submitted = isset( $input['gateways'] ) && is_array( $input['gateways'] ) ? $input['gateways'] : array();
 		foreach ( $this->registry->ids() as $id ) {
@@ -226,6 +236,36 @@ final class SettingsSchema {
 	 */
 	public function merge_defaults( array $stored ): array {
 		return self::merge( $this->defaults(), $stored );
+	}
+
+	/**
+	 * Clean the failover section.
+	 *
+	 * @param mixed    $input Submitted section.
+	 * @param string   $primary Primary gateway id.
+	 * @param string[] $errors Collected errors.
+	 * @return array{gateway:string,mode:string,codes:string,threshold:int,cooldown:int}
+	 */
+	private function sanitize_failover( $input, string $primary, array &$errors ): array {
+		$input   = is_array( $input ) ? $input : array();
+		$backup  = (string) ( $input['gateway'] ?? '' );
+		$mode    = (string) ( $input['mode'] ?? FailoverPolicy::MODE_TEMPORARY );
+		$unknown = '' !== $backup && ! $this->registry->has( $backup );
+		if ( $unknown ) {
+			$errors[] = sprintf( 'Unknown backup gateway "%s"; failover is off.', self::text( $backup, 40 ) );
+			$backup   = '';
+		} elseif ( $backup === $primary && '' !== $backup ) {
+			$errors[] = 'The backup gateway must differ from the main gateway; failover is off.';
+			$backup   = '';
+		}
+
+		return array(
+			'gateway'   => $backup,
+			'mode'      => in_array( $mode, array( FailoverPolicy::MODE_TEMPORARY, FailoverPolicy::MODE_ANY ), true ) ? $mode : FailoverPolicy::MODE_TEMPORARY,
+			'codes'     => implode( ', ', FailoverPolicy::parse_codes( explode( ',', self::text( (string) ( $input['codes'] ?? '' ), 500 ) ) ) ),
+			'threshold' => self::int( $input['threshold'] ?? 3, 0, 100 ),
+			'cooldown'  => self::int( $input['cooldown'] ?? 300, 10, 86400 ),
+		);
 	}
 
 	/**

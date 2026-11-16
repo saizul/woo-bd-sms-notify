@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Saizul\BdSms\WP\Cli;
 
+use Saizul\BdSms\Gateway\FailoverGateway;
 use Saizul\BdSms\Http\FakeHttpClient;
 use Saizul\BdSms\Http\Response;
 use Saizul\BdSms\Log\InMemoryLogRepository;
@@ -301,6 +302,59 @@ final class SmsCommand {
 			return;
 		}
 		$this->report( $entry );
+	}
+
+	/**
+	 * Show or reset the gateway failover state.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--reset]
+	 * : Close the breaker so the next SMS tries the main gateway again.
+	 *
+	 * [--format=<format>]
+	 * : table or json.
+	 * ---
+	 * default: table
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp bd-sms failover
+	 *     wp bd-sms failover --reset
+	 *
+	 * @param string[]             $args Positional arguments.
+	 * @param array<string,string> $assoc_args Options.
+	 */
+	public function failover( $args, $assoc_args ): void {
+		unset( $args );
+		$gateway = $this->services->sending_gateway();
+		if ( ! $gateway instanceof FailoverGateway ) {
+			WP_CLI::log( sprintf( 'Failover is off: every SMS goes through %s. Choose a backup gateway on the settings screen or define WOO_BD_SMS_FAILOVER_GATEWAY.', $gateway->id() ) );
+			return;
+		}
+		if ( ! empty( $assoc_args['reset'] ) ) {
+			$gateway->reset();
+			WP_CLI::success( sprintf( 'Breaker closed; the next SMS tries %s first.', $gateway->id() ) );
+			return;
+		}
+
+		$state  = $gateway->state();
+		$policy = $gateway->policy();
+		$row    = array(
+			'primary'    => $state['primary'],
+			'backup'     => $state['backup'],
+			'mode'       => $policy->mode(),
+			'codes'      => implode( ',', $policy->codes() ),
+			'failures'   => $state['failures'],
+			'threshold'  => $policy->threshold(),
+			'state'      => $state['open'] ? 'open' : 'closed',
+			'open_until' => $state['open'] ? gmdate( 'Y-m-d H:i:s', $state['open_until'] ) . ' UTC' : '',
+		);
+		WP_CLI\Utils\format_items( (string) ( $assoc_args['format'] ?? 'table' ), array( $row ), array_keys( $row ) );
+		foreach ( $gateway->validate_backup() as $problem ) {
+			WP_CLI::warning( sprintf( 'Backup gateway: %s', $problem ) );
+		}
 	}
 
 	/**
